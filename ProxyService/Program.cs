@@ -1,10 +1,12 @@
+using ProxyService.Interfaces;
 using ProxyService.Middlewars;
+using ProxyService.Services;
 using Serilog;
 
-//Log.Logger = new LoggerConfiguration()
-//    .WriteTo.Console()
-//    .WriteTo.File("../logs/WebAppLog-.txt", rollingInterval: RollingInterval.Day)
-//    .CreateLogger();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("../logs/WebAppLog-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 Log.Information("Starting web application");
 
@@ -20,13 +22,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+// Реєструємо HttpClient та сервіси
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IUserService, UserService>(); // Реєструємо наш сервіс
+
 // Додаємо HttpClient в DI-контейнер
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-app.UseMiddleware<HTTPHeaderMiddlewar>();
-app.UseHeaderValidation();
+//app.UseMiddleware<HTTPHeaderMiddlewar>();
+//app.UseHeaderValidation();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
