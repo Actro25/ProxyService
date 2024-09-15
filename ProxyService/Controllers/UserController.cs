@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProxyService.Interfaces;
 using ProxyService.Models;
+using Serilog;
 using System.Text.Json;
 
 namespace ProxyService.Controllers
@@ -9,38 +11,25 @@ namespace ProxyService.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly HttpClient _httpClient;
-        // Кеш для збереження даних про користувачів у пам'яті
-        private static readonly Dictionary<int, User> _userCache = new Dictionary<int, User>();
+        private readonly IUserService _userService;
 
-        public UserController(HttpClient httpClient)
+        public UserController(IUserService userService)
         {
-            _httpClient = httpClient;
+            _userService = userService;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            // Перевіряємо, чи є користувач в кеші
-            if (_userCache.ContainsKey(id))
+            Log.Information("Request for user with ID {Id}", id);
+            var user = await _userService.GetUserById(id);
+            if (user == null)
             {
-                return Ok(_userCache[id]);
-            }
-
-            // Якщо немає в кеші, робимо запит до зовнішнього API
-            var response = await _httpClient.GetAsync($"https://reqres.in/api/users/{id}");
-            if (!response.IsSuccessStatusCode)
-            {
+                Log.Warning("User with ID {Id} not found", id);
                 return NotFound($"User with id {id} not found.");
             }
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var userResponse = JsonSerializer.Deserialize<ReqresUserResponse>(responseContent, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-
-            // Додаємо користувача в кеш
-            _userCache[id] = userResponse.Data;
-
-            return Ok(userResponse.Data);
+            Log.Warning("User with ID {Id} not found", id);
+            return Ok(user);
         }
     }
 }
