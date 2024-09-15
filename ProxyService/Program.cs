@@ -1,6 +1,17 @@
 using ProxyService.Middlewars;
+using Serilog;
+
+//Log.Logger = new LoggerConfiguration()
+//    .WriteTo.Console()
+//    .WriteTo.File("../logs/WebAppLog-.txt", rollingInterval: RollingInterval.Day)
+//    .CreateLogger();
+
+Log.Information("Starting web application");
 
 var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+builder.Services.AddSerilog();
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
