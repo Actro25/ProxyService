@@ -1,3 +1,5 @@
+using ProxyService.Middlewars;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +13,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
+
+app.UseMiddleware<HTTPHeaderMiddlewar>();
+app.UseHeaderValidation();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
