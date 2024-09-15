@@ -1,0 +1,11 @@
+2024-09-15 11:54:20.731 +03:00 [INF] Now listening on: https://localhost:7053
+2024-09-15 11:54:20.770 +03:00 [INF] Now listening on: http://localhost:5293
+2024-09-15 11:54:20.773 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-15 11:54:20.774 +03:00 [INF] Hosting environment: Development
+2024-09-15 11:54:20.774 +03:00 [INF] Content root path: C:\Users\Кирило\OneDrive\Робочий стіл\ProxyTest\ProxyService
+2024-09-15 11:54:21.421 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7053/swagger - null null
+2024-09-15 11:54:21.510 +03:00 [WRN] Access denied: Missing X-Special-Header. Request for /swagger was denied.
+2024-09-15 11:54:21.518 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7053/swagger - 400 null null 100.3589ms
+2024-09-15 11:54:21.609 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7053/favicon.ico - null null
+2024-09-15 11:54:21.612 +03:00 [WRN] Access denied: Missing X-Special-Header. Request for /favicon.ico was denied.
+2024-09-15 11:54:21.614 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7053/favicon.ico - 400 null null 4.9925ms
